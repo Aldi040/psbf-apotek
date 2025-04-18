@@ -22,7 +22,7 @@ class PelangganController @Inject()(db: Database, cc: ControllerComponents)
   )
 
   def index = Action { implicit request =>
-    Ok(views.html.pelanggan.index(Pelanggan.getAll(db)))
+    Ok(views.html.pelanggan.pelanggan(Pelanggan.getAll(db)))
   }
 
   def createForm = Action { implicit request =>
