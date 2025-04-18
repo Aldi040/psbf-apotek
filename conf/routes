@@ -9,3 +9,9 @@ GET     /                           controllers.HomeController.index()
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
 GET     /test-db    controllers.HomeController.testDb
+GET     /pelanggan          controllers.PelangganController.index
+GET     /pelanggan/create   controllers.PelangganController.createForm
+POST    /pelanggan          controllers.PelangganController.save
+GET     /pelanggan/edit/:id controllers.PelangganController.editForm(id: Int)
+POST    /pelanggan/:id      controllers.PelangganController.update(id: Int)
+POST    /pelanggan/delete/:id controllers.PelangganController.delete(id: Int)
