@@ -1,0 +1,15 @@
+@(pelanggan: models.Pelanggan)
+
+@main("Update Pelanggan") {
+  <h1>Edit Pelanggan</h1>
+  <form action="@routes.PelangganController.updatePelanggan(pelanggan.id)" method="post">
+    <label for="nama">Nama:</label>
+    <input type="text" id="nama" name="nama" value="@pelanggan.nama" required/><br/>
+    <label for="jenisKelamin">Jenis Kelamin:</label>
+    <select name="jenisKelamin" required>
+      <option value="Laki-Laki" @(if(pelanggan.jenisKelamin == "Laki-Laki") "selected" else "")>Laki-Laki</option>
+      <option value="Perempuan" @(if(pelanggan.jenisKelamin == "Perempuan") "selected" else "")>Perempuan</option>
+    </select><br/>
+    <button type="submit">Simpan</button>
+  </form>
+}

@@ -1,0 +1,45 @@
+@(pelangganList: List[models.Pelanggan])
+
+@main("Daftar Pelanggan") {
+  <!-- CDN Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+  <h2>Daftar Pelanggan</h2>
+  
+  <!-- Tombol untuk menambah pelanggan -->
+  <a href="@routes.PelangganController.createForm" class="btn btn-success mb-3">Tambah Pelanggan</a>
+  
+  <!-- Tabel untuk menampilkan daftar pelanggan -->
+  <table class="table mt-3">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nama</th>
+        <th>Jenis Kelamin</th>
+        <th>Aksi</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for(p <- pelangganList) {
+        <tr>
+          <td>@p.id</td>
+          <td>@p.nama</td>
+          <td>@p.jenisKelamin</td>
+          <td>
+            <!-- Tombol untuk edit pelanggan -->
+            <a href="@routes.PelangganController.edit(p.id)" class="btn btn-primary btn-sm">Edit</a>
+            
+            <!-- Form untuk menghapus pelanggan -->
+            <form action="@routes.PelangganController.delete(p.id)" method="POST" style="display:inline;">
+              <input type="hidden" name="_method" value="DELETE">
+              <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+            </form>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+
+  <!-- CDN Bootstrap JS -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+}

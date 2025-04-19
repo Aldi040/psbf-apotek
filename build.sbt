@@ -7,13 +7,14 @@ lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
 scalaVersion := "2.13.16"
 
+// Dependensi untuk Play Framework dan Guice
 libraryDependencies += guice
+
+// Dependensi untuk testing dengan Play
 libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "7.0.1" % Test
 
-// Adds additional packages into Twirl
-//TwirlKeys.templateImports += "apoteksehat.com.controllers._"
-
-// Adds additional packages into conf/routes
-// play.sbt.routes.RoutesKeys.routesImport += "apoteksehat.com.binders._"
+// Dependensi JDBC dan MySQL
 libraryDependencies += jdbc
 libraryDependencies += "mysql" % "mysql-connector-java" % "8.0.28"
+
+

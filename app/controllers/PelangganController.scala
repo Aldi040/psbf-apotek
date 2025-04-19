@@ -1,68 +1,59 @@
 package controllers
 
 import javax.inject._
-import play.api._
 import play.api.mvc._
-import play.api.data._
-import play.api.data.Forms._
-import play.api.db.Database
 import models.Pelanggan
+import repositories.PelangganRepo
 
 @Singleton
-class PelangganController @Inject()(db: Database, cc: ControllerComponents) 
-  extends AbstractController(cc) with play.api.i18n.I18nSupport {
+class PelangganController @Inject()(cc: ControllerComponents, repo: PelangganRepo) extends AbstractController(cc) {
 
-  val pelangganForm = Form(
-    mapping(
-      "nama" -> nonEmptyText,
-      "jenis_kelamin" -> nonEmptyText
-    )( (nama, jk) => (nama, jk) )(
-      data => Some( (data._1, data._2) )
-    )
-  )
-
-  def index = Action { implicit request =>
-    Ok(views.html.pelanggan.pelanggan(Pelanggan.getAll(db)))
+  // Menampilkan daftar pelanggan
+  def index = Action {
+    val list = repo.getAllPelanggan().toList  // Mengonversi Seq ke List
+    Ok(views.html.pelanggan.index(list))  // Mengirimkan data dalam format List
   }
 
-  def createForm = Action { implicit request =>
-    Ok(views.html.pelanggan.form(pelangganForm))
+  // Menampilkan form untuk membuat pelanggan baru
+  def createForm = Action {
+    Ok(views.html.pelanggan.create())
   }
 
+  // Menyimpan pelanggan baru
   def save = Action { implicit request =>
-    pelangganForm.bindFromRequest.fold(
-      formWithErrors => BadRequest(views.html.pelanggan.form(formWithErrors)),
-      data => {
-        Pelanggan.create(data._1, data._2)(db)
-        Redirect(routes.PelangganController.index).flashing("success" -> "Pelanggan berhasil dibuat")
-      }
-    )
+    val data = request.body.asFormUrlEncoded.get
+    val nama = data("nama").head
+    val jk = data("jenisKelamin").head
+    repo.insert(Pelanggan(0, nama, jk))  // Menyimpan data pelanggan baru ke database
+    Redirect(routes.PelangganController.index)  // Mengarahkan ke halaman daftar pelanggan
   }
 
-  def editForm(id: Int) = Action { implicit request =>
-    Pelanggan.getById(id)(db) match {
-      case Some(p) => 
-        val formData = (p.nama, p.jenisKelamin)
-        Ok(views.html.pelanggan.form(
-          pelangganForm.fill(formData), 
-          Some(id)
-        ))
-      case None => NotFound("Pelanggan tidak ditemukan")
+  // Menampilkan form untuk mengedit data pelanggan
+  def edit(id: Int) = Action {
+    repo.findById(id) match {
+      case Some(pelanggan) =>
+        // Jika pelanggan ditemukan, tampilkan form edit dengan data pelanggan
+        Ok(views.html.pelanggan.edit(pelanggan))
+      case None =>
+        // Jika pelanggan tidak ditemukan, tampilkan error
+        NotFound("Pelanggan tidak ditemukan")
     }
   }
 
-  def update(id: Int) = Action { implicit request =>
-    pelangganForm.bindFromRequest.fold(
-      formWithErrors => BadRequest(views.html.pelanggan.form(formWithErrors, Some(id))),
-      data => {
-        Pelanggan.update(id, data._1, data._2)(db)
-        Redirect(routes.PelangganController.index).flashing("success" -> "Pelanggan berhasil diupdate")
-      }
-    )
+  // Memperbarui data pelanggan
+  def updatePelanggan(id: Int) = Action { implicit request =>
+    val data = request.body.asFormUrlEncoded.get
+    val nama = data("nama").head
+    val jk = data("jenisKelamin").head
+
+    // Memperbarui data pelanggan di database
+    repo.update(Pelanggan(id, nama, jk))
+    Redirect(routes.PelangganController.index)  // Mengarahkan kembali ke halaman daftar pelanggan
   }
 
+  // Fungsi delete untuk menghapus pelanggan (dapat ditambahkan sesuai kebutuhan)
   def delete(id: Int) = Action {
-    Pelanggan.delete(id)(db)
-    Redirect(routes.PelangganController.index).flashing("success" -> "Pelanggan berhasil dihapus")
+    repo.delete(id)
+    Redirect(routes.PelangganController.index)  // Setelah menghapus, kembali ke halaman daftar pelanggan
   }
 }

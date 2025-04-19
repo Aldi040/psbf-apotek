@@ -1,0 +1,18 @@
+@(pelangganList: Seq[models.Pelanggan])
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daftar Pelanggan</title>
+</head>
+<body>
+  <h1>Daftar Pelanggan</h1>
+  <ul>
+    @for(pelanggan <- pelangganList) {
+      <li>@pelanggan.nama (@pelanggan.jenisKelamin)</li>
+    }
+  </ul>
+</body>
+</html>

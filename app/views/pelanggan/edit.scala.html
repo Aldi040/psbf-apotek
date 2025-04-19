@@ -1,0 +1,19 @@
+@(pelanggan: models.Pelanggan)
+
+@main("Edit Pelanggan") {
+  <h2>Edit Pelanggan</h2>
+  <form action="@routes.PelangganController.updatePelanggan(pelanggan.id)" method="POST">
+    <div class="form-group">
+      <label for="nama">Nama</label>
+      <input type="text" class="form-control" id="nama" name="nama" value="@pelanggan.nama" required>
+    </div>
+    <div class="form-group">
+      <label for="jenisKelamin">Jenis Kelamin</label>
+      <select class="form-control" id="jenisKelamin" name="jenisKelamin">
+        <option value="Laki-laki" @if(pelanggan.jenisKelamin == "Laki-laki") {selected}>Laki-laki</option>
+        <option value="Perempuan" @if(pelanggan.jenisKelamin == "Perempuan") {selected}>Perempuan</option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Update</button>
+  </form>
+}

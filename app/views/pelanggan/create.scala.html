@@ -1,0 +1,15 @@
+@main("Tambah Pelanggan") {
+  <h2>Form Tambah Pelanggan</h2>
+  <form action="@routes.PelangganController.save" method="post">
+    <label>Nama:</label><br>
+    <input type="text" name="nama"><br><br>
+
+    <label>Jenis Kelamin:</label><br>
+    <select name="jenisKelamin">
+      <option value="Laki-Laki">Laki-Laki</option>
+      <option value="Perempuan">Perempuan</option>
+    </select><br><br>
+
+    <input type="submit" value="Simpan">
+  </form>
+}
