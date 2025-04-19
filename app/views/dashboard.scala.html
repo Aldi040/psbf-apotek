@@ -1,34 +1,116 @@
-@()
+@(pendapatanHari: java.math.BigDecimal, pendapatanBulan: java.math.BigDecimal, pendapatanTahun: java.math.BigDecimal, grafik: Seq[(String, java.math.BigDecimal)])
+
 @layout.main("Dashboard Apotek") {
-  <style>
-    .dashboard-header {
-      background-color: #28a745;
-      color: white;
-      padding: 20px;
-      border-radius: 10px;
-      text-align: center;
-    }
-
-    .dashboard-header h1 {
-      font-size: 3rem;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-
-    .dashboard-header p {
-      font-size: 1.2rem;
-      margin-top: 0;
-    }
-
-    .lead {
-      font-size: 1.25rem;
-    }
-  </style>
-
   <div class="container mt-4">
-    <div class="dashboard-header">
-      <h1>Selamat Datang di Dashboard Apotek</h1>
-      <p class="lead">Silakan pilih menu di sebelah kiri untuk mengelola data.</p>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card bg-primary text-white mb-3 shadow-lg" style="border-radius: 15px;">
+          <div class="card-header d-flex align-items-center">
+            <i class="fas fa-calendar-day mr-2"></i>
+            <span>Pendapatan Hari Ini</span>
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">Rp @pendapatanHari</h5>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card bg-success text-white mb-3 shadow-lg" style="border-radius: 15px;">
+          <div class="card-header d-flex align-items-center">
+            <i class="fas fa-calendar-month mr-2"></i>
+            <span>Pendapatan Bulan Ini</span>
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">Rp @pendapatanBulan</h5>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card bg-info text-white mb-3 shadow-lg" style="border-radius: 15px;">
+          <div class="card-header d-flex align-items-center">
+            <i class="fas fa-calendar-year mr-2"></i>
+            <span>Pendapatan Tahun Ini</span>
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">Rp @pendapatanTahun</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mt-4 shadow-lg" style="border-radius: 15px;">
+      <div class="card-header">Grafik Pendapatan per Bulan</div>
+      <div class="card-body">
+        <canvas id="pendapatanChart"></canvas>
+      </div>
     </div>
   </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://kit.fontawesome.com/a076d05399.js"></script> <!-- Font Awesome -->
+  <script>
+    const ctx = document.getElementById('pendapatanChart').getContext('2d');
+
+    // Mengonversi data dari Scala menjadi array yang bisa digunakan oleh Chart.js
+    const labels = [@for((bulan, _) <- grafik) { "@bulan", }];
+    const data = [@for((_, total) <- grafik) { @total.toString, }];
+
+    const chart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Pendapatan',
+          data: data,
+          backgroundColor: 'rgba(75, 192, 192, 0.6)',
+          borderColor: 'rgba(75, 192, 192, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          tooltip: {
+            callbacks: {
+              label: function(tooltipItem) {
+                return 'Rp ' + tooltipItem.raw.toLocaleString();
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            grid: {
+              display: false,
+            },
+            title: {
+              display: true,
+              text: 'Bulan',
+              font: {
+                weight: 'bold',
+              },
+            }
+          },
+          y: {
+            beginAtZero: true,
+            ticks: {
+              callback: function(value) {
+                return 'Rp ' + value.toLocaleString();
+              }
+            },
+            grid: {
+              borderColor: '#ddd',
+            }
+          }
+        },
+        animation: {
+          duration: 1500, // Animasi grafik selama 1.5 detik
+          easing: 'easeOutBounce',
+        }
+      }
+    });
+  </script>
 }
