@@ -5,13 +5,22 @@
 
 # An example controller showing a sample home page
 GET     /                           controllers.HomeController.index()
+GET     /assets/*file              controllers.Assets.versioned(path="/public", file: String)
+
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
-GET     /test-db    controllers.HomeController.testDb
-GET     /pelanggan          controllers.PelangganController.index
-GET     /pelanggan/create   controllers.PelangganController.createForm
-POST    /pelanggan          controllers.PelangganController.save
-GET     /pelanggan/edit/:id controllers.PelangganController.editForm(id: Int)
-POST    /pelanggan/:id      controllers.PelangganController.update(id: Int)
-POST    /pelanggan/delete/:id controllers.PelangganController.delete(id: Int)
+
+# Route untuk menampilkan daftar pelanggan
+# Menampilkan Daftar Pelanggan
+GET     /pelanggan             controllers.PelangganController.index
+GET     /pelanggan/create      controllers.PelangganController.createForm
+POST    /pelanggan/save        controllers.PelangganController.save
+POST    /pelanggan/update/:id      controllers.PelangganController.updatePelanggan(id: Int)
+GET     /pelanggan/edit/:id    controllers.PelangganController.edit(id: Int)
+DELETE   /pelanggan/delete/$id<[^/]+>   controllers.PelangganController.delete(id:Int)
+
+
+
+
+
+
