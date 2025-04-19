@@ -11,13 +11,20 @@ GET     /assets/*file              controllers.Assets.versioned(path="/public", 
 # Map static resources from the /public folder to the /assets URL path
 
 # Route untuk menampilkan daftar pelanggan
+GET     /dashboard              controllers.DashboardController.index
+GET     /obat                   controllers.ObatController.index
+GET     /supplier               controllers.SupplierController.index
+GET     /transaksi              controllers.TransaksiController.index
+
 # Menampilkan Daftar Pelanggan
 GET     /pelanggan             controllers.PelangganController.index
 GET     /pelanggan/create      controllers.PelangganController.createForm
 POST    /pelanggan/save        controllers.PelangganController.save
 POST    /pelanggan/update/:id      controllers.PelangganController.updatePelanggan(id: Int)
 GET     /pelanggan/edit/:id    controllers.PelangganController.edit(id: Int)
-DELETE   /pelanggan/delete/$id<[^/]+>   controllers.PelangganController.delete(id:Int)
+POST   /pelanggan/delete/:id   controllers.PelangganController.delete(id: Int)
+
+
 
 
 

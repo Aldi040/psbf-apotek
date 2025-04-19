@@ -1,19 +1,47 @@
 @(pelanggan: models.Pelanggan)
 
-@main("Edit Pelanggan") {
-  <h2>Edit Pelanggan</h2>
-  <form action="@routes.PelangganController.updatePelanggan(pelanggan.id)" method="POST">
-    <div class="form-group">
-      <label for="nama">Nama</label>
-      <input type="text" class="form-control" id="nama" name="nama" value="@pelanggan.nama" required>
+@layout.main("Edit Pelanggan") {
+  <div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2><i class="fas fa-user-edit"></i> Edit Pelanggan</h2>
+      <a href="@routes.PelangganController.index" class="btn btn-secondary">
+        <i class="fas fa-arrow-left"></i> Kembali
+      </a>
     </div>
-    <div class="form-group">
-      <label for="jenisKelamin">Jenis Kelamin</label>
-      <select class="form-control" id="jenisKelamin" name="jenisKelamin">
-        <option value="Laki-laki" @if(pelanggan.jenisKelamin == "Laki-laki") {selected}>Laki-laki</option>
-        <option value="Perempuan" @if(pelanggan.jenisKelamin == "Perempuan") {selected}>Perempuan</option>
-      </select>
+
+    <div class="card shadow-sm">
+      <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">Form Edit Pelanggan</h5>
+      </div>
+      <div class="card-body">
+        <form action="@routes.PelangganController.updatePelanggan(pelanggan.id)" method="POST">
+          <div class="mb-3">
+            <label for="nama" class="form-label">Nama</label>
+            <input type="text" class="form-control" id="nama" name="nama" value="@pelanggan.nama" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label d-block">Jenis Kelamin</label>
+            <div class="btn-group" role="group">
+              <input type="radio" class="btn-check" name="jenisKelamin" id="laki" value="Laki-laki" autocomplete="off"
+                @if(pelanggan.jenisKelamin == "Laki-laki") { checked }>
+              <label class="btn btn-outline-primary" for="laki">
+                <i class="fas fa-mars"></i> Laki-laki
+              </label>
+
+              <input type="radio" class="btn-check" name="jenisKelamin" id="perempuan" value="Perempuan" autocomplete="off"
+                @if(pelanggan.jenisKelamin == "Perempuan") { checked }>
+              <label class="btn btn-outline-danger" for="perempuan">
+                <i class="fas fa-venus"></i> Perempuan
+              </label>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-success mt-3">
+            <i class="fas fa-save"></i> Update
+          </button>
+        </form>
+      </div>
     </div>
-    <button type="submit" class="btn btn-primary">Update</button>
-  </form>
+  </div>
 }
