@@ -1,5 +1,69 @@
-@()
-@layout.main("Data Supplier") {
-  <h2>Data Supplier</h2>
-  <p>Konten supplier akan ditampilkan di sini.</p>
+@(supplierList: List[models.Supplier])
+
+@layout.main("Daftar Supplier") {
+  <style>
+    .text-pink {
+      color: #e83e8c;
+    }
+    table th, table td {
+      font-size: 1.1rem;
+      padding: 1rem;
+    }
+    .table th {
+      font-weight: bold;
+    }
+  </style>
+
+  <div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2><i class="fas fa-truck"></i> Daftar Supplier</h2>
+      <a href="@routes.SupplierController.createForm" class="btn btn-success">
+        <i class="fas fa-plus"></i> Tambah Supplier
+      </a>
+    </div>
+
+    <div class="card shadow-sm">
+      <div class="card-header bg-success text-white">
+        <h5 class="mb-0">Daftar Supplier</h5>
+      </div>
+      <div class="card-body p-0">
+        <table class="table table-striped table-hover mb-0">
+          <thead class="table-light">
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Nama</th>
+              <th scope="col">Alamat</th>
+              <th scope="col">Telepon</th>
+              <th scope="col">Email</th>
+              <th scope="col" class="text-end">Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for(s <- supplierList) {
+              <tr>
+                <th scope="row">@s.id</th>
+                <td>@s.nama</td>
+                <td>@s.alamat.getOrElse("-")</td>
+                <td>@s.telepon.getOrElse("-")</td>
+                <td>@s.email.getOrElse("-")</td>
+                <td class="text-end">
+                  <div class="d-inline-flex gap-2" role="group" aria-label="Aksi">
+                    <a href="@routes.SupplierController.edit(s.id)" class="btn btn-primary btn-sm">
+                      <i class="fas fa-edit"></i> Edit
+                    </a>
+                    <form action="@routes.SupplierController.delete(s.id)" method="POST" onsubmit="return confirm('Yakin ingin menghapus supplier ini?');" style="display:inline;">
+                      <input type="hidden" name="_method" value="DELETE">
+                      <button type="submit" class="btn btn-danger btn-sm">
+                        <i class="fas fa-trash-alt"></i> Hapus
+                      </button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 }
