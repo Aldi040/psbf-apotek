@@ -8,4 +8,5 @@ class TransaksiController @Inject()(cc: ControllerComponents) extends AbstractCo
   def index = Action {
     Ok(views.html.transaksi.index())
   }
+  
 }
