@@ -1,45 +1,71 @@
 @(pelangganList: List[models.Pelanggan])
 
-@main("Daftar Pelanggan") {
-  <!-- CDN Bootstrap CSS -->
-  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+@layout.main("Daftar Pelanggan") {
+  <style>
+    .text-pink {
+      color: #e83e8c;
+    }
+    table th, table td {
+      font-size: 1.1rem;
+      padding: 1rem;
+    }
+    .table th {
+      font-weight: bold;
+    }
+  </style>
 
-  <h2>Daftar Pelanggan</h2>
-  
-  <!-- Tombol untuk menambah pelanggan -->
-  <a href="@routes.PelangganController.createForm" class="btn btn-success mb-3">Tambah Pelanggan</a>
-  
-  <!-- Tabel untuk menampilkan daftar pelanggan -->
-  <table class="table mt-3">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Nama</th>
-        <th>Jenis Kelamin</th>
-        <th>Aksi</th>
-      </tr>
-    </thead>
-    <tbody>
-      @for(p <- pelangganList) {
-        <tr>
-          <td>@p.id</td>
-          <td>@p.nama</td>
-          <td>@p.jenisKelamin</td>
-          <td>
-            <!-- Tombol untuk edit pelanggan -->
-            <a href="@routes.PelangganController.edit(p.id)" class="btn btn-primary btn-sm">Edit</a>
-            
-            <!-- Form untuk menghapus pelanggan -->
-            <form action="@routes.PelangganController.delete(p.id)" method="POST" style="display:inline;">
-              <input type="hidden" name="_method" value="DELETE">
-              <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-            </form>
-          </td>
-        </tr>
-      }
-    </tbody>
-  </table>
+  <div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2><i class="fas fa-user-friends"></i> Daftar Pelanggan</h2>
+      <a href="@routes.PelangganController.createForm" class="btn btn-success">
+        <i class="fas fa-plus"></i> Tambah Pelanggan
+      </a>
+    </div>
 
-  <!-- CDN Bootstrap JS -->
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <div class="card shadow-sm">
+      <div class="card-header bg-success text-white">
+        <h5 class="mb-0">Daftar Pelanggan</h5>
+      </div>
+      <div class="card-body p-0">
+        <table class="table table-striped table-hover mb-0">
+          <thead class="table-light">
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Nama</th>
+              <th scope="col">Jenis Kelamin</th>
+              <th scope="col" class="text-end">Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for(p <- pelangganList) {
+              <tr>
+                <th scope="row">@p.id</th>
+                <td>@p.nama</td>
+                <td>
+                  @if(p.jenisKelamin.toLowerCase == "laki-laki") {
+                    <span class="text-primary fw-semibold"><i class="fas fa-mars me-1"></i> @p.jenisKelamin</span>
+                  } else {
+                    <span class="text-pink fw-semibold"><i class="fas fa-venus me-1"></i> @p.jenisKelamin</span>
+                  }
+                </td>
+                <td class="text-end">
+                  <div class="d-inline-flex gap-2" role="group" aria-label="Aksi">
+                    <a href="@routes.PelangganController.edit(p.id)" class="btn btn-primary btn-sm">
+                      <i class="fas fa-edit"></i> Edit
+                    </a>
+                    <form action="@routes.PelangganController.delete(p.id)" method="POST" onsubmit="return confirm('Yakin ingin menghapus pelanggan ini?');" style="display:inline;">
+                      <input type="hidden" name="_method" value="DELETE">
+                      <button type="submit" class="btn btn-danger btn-sm">
+                        <i class="fas fa-trash-alt"></i> Hapus
+                      </button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 }
