@@ -37,7 +37,14 @@ POST    /supplier/update/:id        controllers.SupplierController.updateSupplie
 GET     /supplier/edit/:id          controllers.SupplierController.edit(id: Int)
 POST    /supplier/delete/:id        controllers.SupplierController.delete(id: Int)
 
-
+# obat
+# obat Routes
+GET     /obat                   controllers.ObatController.index
+GET     /obat/create            controllers.ObatController.createForm
+POST    /obat/save          controllers.ObatController.save
+POST    /obat/update/:id        controllers.ObatController.updateObat(id: Int)
+GET     /obat/edit/:id          controllers.ObatController.edit(id: Int)
+POST    /obat/delete/:id        controllers.ObatController.delete(id: Int)
 
 
 
