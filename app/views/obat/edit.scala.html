@@ -1,0 +1,60 @@
+@(obat: models.Obat)
+
+@layout.main("Edit Obat") {
+  <div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2><i class="fa-solid fa-tablets"></i></i> Edit Obat</h2>
+      <a href="@routes.ObatController.index" class="btn btn-secondary">
+        <i class="fas fa-arrow-left"></i> Kembali
+      </a>
+    </div>
+
+    <div class="card shadow-sm">
+      <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">Form Edit Obat</h5>
+      </div>
+      <div class="card-body">
+        <form action="@routes.ObatController.updateObat(obat.id)" method="POST">
+          <div class="mb-3">
+            <label for="nama_obat" class="form-label">Nama Obat</label>
+            <input type="text" class="form-control" id="nama_obat" name="nama_obat" value="@obat.nama_obat" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="kategori" class="form-label">Kategori</label>
+            <input type="text" class="form-control" id="kategori" name="kategori" value="@obat.kategori.getOrElse("")">
+          </div>
+
+          <div class="mb-3">
+            <label for="keterangan" class="form-label">Keterangan</label>
+            <input type="text" class="form-control" id="keterangan" name="keterangan" value="@obat.keterangan.getOrElse("")">
+          </div>
+
+          <div class="mb-3">
+            <label for="jumlah_stock" class="form-label">Jumlah Stok</label>
+            <input type="number" class="form-control" id="jumlah_stock" name="jumlah_stock" value="@obat.jumlah_stock.getOrElse("")">
+          </div>
+
+        <div class="mb-3">
+            <label for="harga" class="form-label">Harga</label>
+            <input type="number" class="form-control" id="harga" name="harga" value="@obat.harga.getOrElse("")">
+        </div>
+
+
+        <div class="mb-3">
+            <label for="exp" class="form-label">Expired Date</label>
+            <input type="date" class="form-control" id="exp" name="exp" value="@obat.exp.getOrElse("")">
+        </div>
+
+        <input type="hidden"
+        name="id_supplier"
+        value="@obat.id_supplier.getOrElse("")" />
+
+          <button type="submit" class="btn btn-success mt-3">
+            <i class="fas fa-save"></i> Update
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+}
