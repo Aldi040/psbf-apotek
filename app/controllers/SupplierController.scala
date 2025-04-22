@@ -6,13 +6,19 @@ import models.Supplier
 import repositories.SupplierRepo
 
 @Singleton
-class SupplierController @Inject()(cc: ControllerComponents, repo: SupplierRepo) extends AbstractController(cc) {
+class SupplierController @Inject()(cc: ControllerComponents, supplierRepo: SupplierRepo) extends AbstractController(cc) {
 
-  // Menampilkan daftar supplier
-  def index = Action {
-    val list = repo.getAllSupplier.toList
-    Ok(views.html.supplier.index(list))
+  // Menampilkan daftar supplier, dengan opsi pencarian
+  def index(keyword: Option[String]) = Action { implicit request =>
+    val list = keyword match {
+      case Some(k) => supplierRepo.searchByName(k).toList
+      case None    => supplierRepo.getAllSupplier().toList
+    }
+    Ok(views.html.supplier.index(list, keyword))
   }
+
+
+
 
   // Menampilkan form untuk membuat supplier baru
   def createForm = Action {
@@ -27,13 +33,13 @@ class SupplierController @Inject()(cc: ControllerComponents, repo: SupplierRepo)
     val telepon = data.get("telepon").flatMap(_.headOption)
     val email = data.get("email").flatMap(_.headOption)
 
-    repo.insert(Supplier(0, nama, alamat, telepon, email))
-    Redirect(routes.SupplierController.index)
+    supplierRepo.insert(Supplier(0, nama, alamat, telepon, email))
+    Redirect(routes.SupplierController.index(None))
   }
 
   // Menampilkan form untuk mengedit supplier
   def edit(id: Int) = Action {
-    repo.findById(id) match {
+    supplierRepo.findById(id) match {
       case Some(supplier) =>
         Ok(views.html.supplier.edit(supplier))
       case None =>
@@ -50,13 +56,13 @@ class SupplierController @Inject()(cc: ControllerComponents, repo: SupplierRepo)
     val email = data.get("email").flatMap(_.headOption)
 
     val updated = Supplier(id, nama, alamat, telepon, email)
-    repo.update(updated)
-    Redirect(routes.SupplierController.index)
+    supplierRepo.update(updated)
+    Redirect(routes.SupplierController.index(None))
   }
 
   // Menghapus supplier
   def delete(id: Int) = Action {
-    repo.delete(id)
-    Redirect(routes.SupplierController.index)
+    supplierRepo.delete(id)
+    Redirect(routes.SupplierController.index(None))
   }
 }
