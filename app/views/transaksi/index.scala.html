@@ -1,7 +1,8 @@
 @import java.text.NumberFormat
 @import java.util.Locale
 
-@(transaksiList: List[models.TransaksiWithPelanggan]) 
+@(transaksiList: List[models.TransaksiWithPelanggan], keyword: Option[String])
+
 @layout.main("Daftar Transaksi") {
   <style>
     .text-purple {
@@ -29,6 +30,11 @@
         <h5 class="mb-0">Daftar Transaksi</h5>
       </div>
       <div class="card-body p-0">
+        <!-- Form Pencarian -->
+        
+        
+        
+
         <table class="table table-striped table-hover mb-0">
           <thead class="table-light">
             <tr>
@@ -47,7 +53,7 @@
                   <td>@t.idTransaksi.getOrElse("-")</td>
                   <td>@t.namaPelanggan.getOrElse("<span class='text-muted fst-italic'>Tidak ada</span>")</td>
                   <td>@t.tanggalTransaksi</td>
-                  <td>Rp @numberFormat.format(t.totalHarga.setScale(0, BigDecimal.RoundingMode.HALF_UP))</td> <!-- Format harga -->
+                  <td>Rp @numberFormat.format(t.totalHarga.setScale(0, BigDecimal.RoundingMode.HALF_UP))</td>
                   <td><span class="text-purple fw-semibold">@t.metodePembayaran</span></td>
                   <td class="text-end">
                     <div class="d-inline-flex gap-2" role="group" aria-label="Aksi">

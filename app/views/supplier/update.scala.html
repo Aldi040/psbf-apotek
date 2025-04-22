@@ -1,0 +1,20 @@
+@(supplier: models.Supplier)
+
+@main("Update Supplier") {
+  <h1>Edit Supplier</h1>
+  <form action="@routes.SupplierController.updateSupplier(supplier.id)" method="post">
+    <label for="nama">Nama:</label>
+    <input type="text" id="nama" name="nama" value="@supplier.nama" required/><br/>
+
+    <label for="alamat">Alamat:</label>
+    <input type="text" id="alamat" name="alamat" value="@supplier.alamat.getOrElse("")"/><br/>
+
+    <label for="telepon">Telepon:</label>
+    <input type="text" id="telepon" name="telepon" value="@supplier.telepon.getOrElse("")"/><br/>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" value="@supplier.email.getOrElse("")"/><br/>
+
+    <button type="submit">Simpan</button>
+  </form>
+}

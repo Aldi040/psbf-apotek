@@ -5,6 +5,8 @@ import play.api.db.DBApi
 import java.sql.{Connection, Date}
 import java.time.LocalDate
 import models.Transaksi
+import models.Pelanggan
+
 
 @Singleton
 class TransaksiRepo @Inject()(dbapi: DBApi) {
@@ -95,4 +97,38 @@ class TransaksiRepo @Inject()(dbapi: DBApi) {
       stmt.executeUpdate()
     }
   }
+
+def searchByName(keyword: String): List[Transaksi] = {
+  db.withConnection { implicit connection =>
+    val query = """SELECT t.id_transaksi, t.id_pelanggan, t.tanggal_transaksi, t.total_harga, t.metode_pembayaran, p.nama_pelanggan
+                   |FROM transaksi t
+                   |JOIN pelanggan p ON t.id_pelanggan = p.id_pelanggan
+                   |WHERE LOWER(p.nama_pelanggan) LIKE ?""".stripMargin
+    val logKeyword = "%" + keyword.toLowerCase + "%"  // Log the actual keyword with wildcards
+    println(s"Executing SQL query with keyword: $logKeyword")  // Log query and keyword
+
+    val stmt = connection.prepareStatement(query)
+    stmt.setString(1, logKeyword)
+    val rs = stmt.executeQuery()
+
+    val buffer = scala.collection.mutable.ListBuffer[Transaksi]()
+    while (rs.next()) {
+      buffer += Transaksi(
+        idTransaksi = Some(rs.getInt("id_transaksi")),
+        idPelanggan = Some(rs.getInt("id_pelanggan")),
+        tanggalTransaksi = rs.getDate("tanggal_transaksi").toLocalDate,
+        totalHarga = rs.getBigDecimal("total_harga"),
+        metodePembayaran = rs.getString("metode_pembayaran")
+      )
+    }
+
+    println(s"Found ${buffer.size} transactions")  // Log how many transactions were found
+    buffer.toList
+  }
+}
+
+
+
+
+
 }

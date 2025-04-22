@@ -1,0 +1,28 @@
+@(obat: models.Obat)
+
+@main("Update Obat") {
+  <h1>Edit Obat</h1>
+  <form action="@routes.ObatController.updateObat(obat.id)" method="post">
+    <label for="nama_obat">Nama Obat:</label>
+    <input type="text" id="nama_obat" name="nama_obat" value="@obat.nama_obat" required/><br/>
+
+    <label for="kategori">kategorit:</label>
+    <input type="text" id="kategori" name="kategori" value="@obat.kategori.getOrElse("")"/><br/>
+
+    <label for="keterangan">Keterangan:</label>
+    <input type="text" id="keterangan" name="keterangan" value="@obat.keterangan.getOrElse("")"/><br/>
+
+    <label for="jumlah_stock">Jumlah Stok:</label>
+    <input type="number" id="jumlah_stock" name="jumlah_stock" value="@obat.jumlah_stock.getOrElse("")"/><br/>
+
+    <label for="harga">Harga:</label>
+    <input type="number" id="harga" name="harga" value="@obat.harga.getOrElse("")"/><br/>
+
+    <label for="exp">Expired Date:</label>
+    <input type="date" id="exp" name="exp" value="@obat.exp.getOrElse("")"/><br/>
+    
+  
+
+    <button type="submit">Simpan</button>
+  </form>
+}

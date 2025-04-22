@@ -1,0 +1,60 @@
+@(supplier: Seq[models.Supplier])
+@layout.main("Tambah Obat") {
+  <div class="container mt-4">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <!-- Tombol Kembali -->
+        <a href="@routes.ObatController.index(None)" class="btn btn-secondary mb-3">
+          <i class="fas fa-arrow-left"></i> Kembali
+        </a>
+        <div class="card shadow-sm">
+          <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+            <h4 class="mb-0"><i class="fa-solid fa-tablets"></i></i> Tambah Obat</h4>
+          </div>
+          <div class="card-body">
+            <form action="@routes.ObatController.save" method="post">
+              <div class="mb-3">
+                <label for="nama_obat" class="form-label">Nama Obat</label>
+                <input type="text" class="form-control" id="nama_obat" name="nama_obat" required>
+              </div>
+              <div class="mb-3">
+                <label for="kategori" class="form-label">Kategori</label>
+                <input type="text" class="form-control" id="kategori" name="kategori">
+              </div>
+              <div class="mb-3">
+                <label for="keterangan" class="form-label">Keterangan</label>
+                <input type="text" class="form-control" id="keterangan" name="keterangan">
+              </div>
+              <div class="mb-3">
+                <label for="jumlah_stock" class="form-label">Jumlah Stok</label>
+                <input type="number" class="form-control" id="jumlah_stock" name="jumlah_stock">
+              </div>
+                <div class="mb-3">
+                <label for="harga" class="form-label">Harga</label>
+                <input type="number" class="form-control" id="harga" name="harga">
+              </div>
+                <div class="mb-3">
+                <label for="exp" class="form-label">Expired Date</label>
+                <input type="date" class="form-control" id="exp" name="exp">
+              </div>
+                <div class="mb-3">
+                <label for="id_supplier" class="form-label">Nama Supplier</label>
+                <select name="id_supplier" id="id_supplier" class="form-select">
+                  <option value="">Pilih Supplier....</option>
+                  @for(s <- supplier){
+                    <option value="@s.id">@s.nama</option>
+                  }
+                </select>
+              </div>
+              <div class="d-flex justify-content-end">
+                <button type="submit" class="btn btn-success">
+                  <i class="fas fa-save"></i> Simpan
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+}

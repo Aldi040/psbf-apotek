@@ -15,24 +15,33 @@ class TransaksiController @Inject()(
 ) extends AbstractController(cc) {
 
   // Menampilkan daftar transaksi
-  def index = Action { implicit request =>
-    // Mengambil daftar transaksi
-    val transaksiList = transaksiRepo.getAllTransaksi()
+def index(keyword: Option[String]) = Action { implicit request =>
+  println(s"Received keyword: ${keyword.getOrElse("No keyword")}")  // Log the keyword received
 
-    // Mengambil daftar pelanggan
-    val pelangganList = pelangganRepo.getAllPelanggan()
-
-    // Membuat peta ID Pelanggan dengan nama
-    val mapPelanggan = pelangganList.map(p => p.id -> p.nama).toMap
-
-    // Menggabungkan transaksi dengan nama pelanggan
-    val transaksiGabung = transaksiList.map { t =>
-      val nama = t.idPelanggan.flatMap(mapPelanggan.get)
-      TransaksiWithPelanggan(t.idTransaksi, nama, t.tanggalTransaksi, t.totalHarga, t.metodePembayaran)
-    }
-
-    Ok(views.html.transaksi.index(transaksiGabung))
+  val transaksiList = keyword match {
+    case Some(k) =>
+      println(s"Searching transactions with keyword: $k")  // Log the search keyword
+      transaksiRepo.searchByName(k)
+    case None =>
+      println("No keyword, showing all transactions")  // Log if no keyword
+      transaksiRepo.getAllTransaksi()
   }
+
+  val pelangganList = pelangganRepo.getAllPelanggan()
+  val mapPelanggan = pelangganList.map(p => p.id -> p.nama).toMap
+
+  val transaksiGabung = transaksiList.map { t =>
+    val nama = t.idPelanggan.flatMap(mapPelanggan.get)
+    TransaksiWithPelanggan(t.idTransaksi, nama, t.tanggalTransaksi, t.totalHarga, t.metodePembayaran)
+  }
+
+  Ok(views.html.transaksi.index(transaksiGabung, keyword))
+}
+
+
+
+
+
 
   // Menampilkan form untuk membuat transaksi baru
 def createForm = Action { implicit request =>
@@ -71,7 +80,7 @@ def save = Action { implicit request =>
       transaksiRepo.insert(transaksi)
 
       // Redirect ke halaman transaksi
-      Redirect(routes.TransaksiController.index)
+    Redirect(routes.TransaksiController.index(None))
 
     case None =>
       // Handle jika idPelanggan kosong
@@ -115,12 +124,12 @@ def save = Action { implicit request =>
     transaksiRepo.update(transaksi)
 
     // Redirect ke halaman transaksi
-    Redirect(routes.TransaksiController.index)
+    Redirect(routes.TransaksiController.index(None))
   }
 
   // Menghapus transaksi berdasarkan ID
   def delete(id: Int) = Action {
     transaksiRepo.delete(id)
-    Redirect(routes.TransaksiController.index)
+    Redirect(routes.TransaksiController.index(None))
   }
 }
