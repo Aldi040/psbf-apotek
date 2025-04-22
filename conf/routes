@@ -56,6 +56,13 @@ POST    /transaksi/update/:id  controllers.TransaksiController.update(id: Int)
 GET     /transaksi/edit/:id    controllers.TransaksiController.edit(id: Int)
 POST    /transaksi/delete/:id  controllers.TransaksiController.delete(id: Int)
 
+# Detail routes
+GET     /detail                      controllers.DetailController.index
+GET     /detail/create               controllers.DetailController.createForm
+POST    /detail/save                 controllers.DetailController.save
+GET     /detail/edit/:id             controllers.DetailController.editForm(id: Int)
+POST    /detail/update/:id           controllers.DetailController.update(id: Int)
+GET     /detail/delete/:id           controllers.DetailController.delete(id: Int)
 
 
 
