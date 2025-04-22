@@ -83,4 +83,27 @@ class SupplierRepo @Inject()(dbapi: DBApi) {
       stmt.executeUpdate()
     }
   }
+def searchByName(keyword: String): List[Supplier] = {
+  db.withConnection { implicit connection => 
+    val stmt = connection.prepareStatement("SELECT * FROM supplier WHERE LOWER(nama_supplier) LIKE ?")
+    stmt.setString(1, "%" + keyword.toLowerCase + "%")
+    val rs = stmt.executeQuery()
+    val buffer = scala.collection.mutable.ListBuffer[Supplier]()
+    
+    while (rs.next()) {
+      buffer += Supplier(
+        rs.getInt("id_supplier"),
+        rs.getString("nama_supplier"),
+        Option(rs.getString("alamat_supplier")),  // Correct column name
+        Option(rs.getString("telepon_supplier")), // Correct column name
+        Option(rs.getString("email_supplier"))   // Correct column name
+      )
+    }
+
+    buffer.toList
+  }
 }
+}
+
+
+  

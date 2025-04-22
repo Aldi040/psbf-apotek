@@ -1,4 +1,7 @@
-@(supplierList: List[models.Supplier])
+@import play.api.mvc.Request
+@import play.api.mvc.AnyContent
+
+@(supplierList: List[models.Supplier], keyword: Option[String])
 
 @layout.main("Daftar Supplier") {
   <style>
@@ -27,6 +30,10 @@
         <h5 class="mb-0">Daftar Supplier</h5>
       </div>
       <div class="card-body p-0">
+        <form class="d-flex mb-3" action="@routes.SupplierController.index(keyword)" method="GET">
+          <input class="form-control me-2" type="search" name="keyword" placeholder="Cari nama supplier..." aria-label="Search" value="@keyword.getOrElse("")">
+          <button class="btn btn-outline-success" type="submit"><i class="fas fa-search"></i> Cari</button>
+        </form>
         <table class="table table-striped table-hover mb-0">
           <thead class="table-light">
             <tr>

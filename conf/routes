@@ -13,7 +13,7 @@ GET     /assets/*file              controllers.Assets.versioned(path="/public", 
 # Route untuk menampilkan daftar pelanggan
 GET     /dashboard              controllers.DashboardController.index
 GET     /obat                   controllers.ObatController.index
-GET     /supplier               controllers.SupplierController.index
+GET     /supplier               controllers.SupplierController.index(keyword: Option[String] ?= None)
 GET     /transaksi              controllers.TransaksiController.index
 
 # Menampilkan Daftar Pelanggan
@@ -30,12 +30,14 @@ GET     /dashboard               controllers.DashboardController.index
 
 # supplier
 # Supplier Routes
-GET     /supplier                   controllers.SupplierController.index
+GET     /supplier               controllers.SupplierController.index(keyword: Option[String] ?= None)
 GET     /supplier/create            controllers.SupplierController.createForm
 POST    /supplier/save              controllers.SupplierController.save
 POST    /supplier/update/:id        controllers.SupplierController.updateSupplier(id: Int)
 GET     /supplier/edit/:id          controllers.SupplierController.edit(id: Int)
 POST    /supplier/delete/:id        controllers.SupplierController.delete(id: Int)
+
+
 
 
 
