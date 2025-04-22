@@ -25,6 +25,18 @@ GET     /pelanggan/edit/:id    controllers.PelangganController.edit(id: Int)
 POST   /pelanggan/delete/:id   controllers.PelangganController.delete(id: Int)
 
 
+# Menampilkan table transaksi
+GET     /transaksi             controllers.TransaksiController.index
+GET     /transaksi/create      controllers.TransaksiController.createForm
+POST    /transaksi/save        controllers.TransaksiController.save
+POST    /transaksi/update/:id  controllers.TransaksiController.update(id: Int)
+GET     /transaksi/edit/:id    controllers.TransaksiController.edit(id: Int)
+POST    /transaksi/delete/:id  controllers.TransaksiController.delete(id: Int)
+
+
+
+
+
 
 
 

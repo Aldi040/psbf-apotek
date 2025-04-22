@@ -1,0 +1,65 @@
+@import models.Pelanggan
+
+@(pelangganList: List[Pelanggan])  // Menerima parameter pelangganList
+
+@layout.main("Tambah Transaksi") {
+  <div class="container mt-4">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <!-- Tombol Kembali -->
+        <a href="@routes.TransaksiController.index" class="btn btn-secondary mb-3">
+          <i class="fas fa-arrow-left"></i> Kembali
+        </a>
+        <div class="card shadow-sm">
+          <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+            <h4 class="mb-0"><i class="fas fa-receipt"></i> Tambah Transaksi</h4>
+          </div>
+          <div class="card-body">
+            <form action="@routes.TransaksiController.save" method="post">
+              <!-- Dropdown untuk memilih Nama Pelanggan -->
+              <div class="mb-3">
+                <label for="idPelanggan" class="form-label">Nama Pelanggan</label>
+                <select class="form-select" id="idPelanggan" name="idPelanggan" required>
+                  <option value="">Pilih Pelanggan</option>
+                  @for(p <- pelangganList) {
+                    <option value="@p.id">@p.nama</option>
+                  }
+                </select>
+              </div>
+
+              <!-- Input untuk Tanggal Transaksi -->
+              <div class="mb-3">
+                <label for="tanggalTransaksi" class="form-label">Tanggal Transaksi</label>
+                <input type="date" class="form-control" id="tanggalTransaksi" name="tanggalTransaksi" required>
+              </div>
+
+              <!-- Input untuk Total Harga -->
+              <div class="mb-3">
+                <label for="totalHarga" class="form-label">Total Harga</label>
+                <input type="number" step="0.01" class="form-control" id="totalHarga" name="totalHarga" required>
+              </div>
+
+              <!-- Dropdown untuk Metode Pembayaran -->
+              <div class="mb-3">
+                <label for="metodePembayaran" class="form-label">Metode Pembayaran</label>
+                <select class="form-select" id="metodePembayaran" name="metodePembayaran" required>
+                  <option value="Tunai">Tunai</option>
+                  <option value="Transfer Bank">Transfer Bank</option>
+                  <option value="E-Wallet">E-Wallet</option>
+                  <option value="QRIS">QRIS</option>
+                </select>
+              </div>
+
+              <!-- Tombol Simpan -->
+              <div class="d-flex justify-content-end">
+                <button type="submit" class="btn btn-success">
+                  <i class="fas fa-save"></i> Simpan Transaksi
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+}

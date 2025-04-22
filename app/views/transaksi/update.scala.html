@@ -1,0 +1,25 @@
+@(transaksi: models.Transaksi)
+
+@main("Update Transaksi") {
+  <h1>Edit Transaksi</h1>
+  <form action="@routes.TransaksiController.update(transaksi.idTransaksi.get)" method="post">
+    <label for="idPelanggan">ID Pelanggan (opsional):</label>
+    <input type="number" id="idPelanggan" name="idPelanggan" value="@transaksi.idPelanggan.getOrElse("")"/><br/>
+
+    <label for="tanggalTransaksi">Tanggal Transaksi:</label>
+    <input type="date" id="tanggalTransaksi" name="tanggalTransaksi" value="@transaksi.tanggalTransaksi" required/><br/>
+
+    <label for="totalHarga">Total Harga:</label>
+    <input type="number" step="0.01" id="totalHarga" name="totalHarga" value="@transaksi.totalHarga" required/><br/>
+
+    <label for="metodePembayaran">Metode Pembayaran:</label>
+    <select name="metodePembayaran" required>
+      <option value="Tunai" @(if(transaksi.metodePembayaran == "Tunai") "selected" else "")>Tunai</option>
+      <option value="Transfer Bank" @(if(transaksi.metodePembayaran == "Transfer Bank") "selected" else "")>Transfer Bank</option>
+      <option value="E-Wallet" @(if(transaksi.metodePembayaran == "E-Wallet") "selected" else "")>E-Wallet</option>
+      <option value="QRIS" @(if(transaksi.metodePembayaran == "QRIS") "selected" else "")>QRIS</option>
+    </select><br/>
+
+    <button type="submit">Simpan</button>
+  </form>
+}

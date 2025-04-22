@@ -1,0 +1,50 @@
+@(transaksi: models.Transaksi)
+
+@layout.main("Edit Transaksi") {
+  <div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2><i class="fas fa-edit"></i> Edit Transaksi</h2>
+      <a href="@routes.TransaksiController.index" class="btn btn-secondary">
+        <i class="fas fa-arrow-left"></i> Kembali
+      </a>
+    </div>
+
+    <div class="card shadow-sm">
+      <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">Form Edit Transaksi</h5>
+      </div>
+      <div class="card-body">
+        <form action="@routes.TransaksiController.update(transaksi.idTransaksi.get)" method="POST">
+            <div class="mb-3">
+            <label for="idPelanggan" class="form-label">ID Pelanggan (opsional)</label>
+            <input type="number" class="form-control" id="idPelanggan" name="idPelanggan" value="@transaksi.idPelanggan.getOrElse("")">
+          </div>
+
+          <div class="mb-3">
+            <label for="tanggalTransaksi" class="form-label">Tanggal Transaksi</label>
+            <input type="date" class="form-control" id="tanggalTransaksi" name="tanggalTransaksi" value="@transaksi.tanggalTransaksi" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="totalHarga" class="form-label">Total Harga</label>
+            <input type="number" step="0.01" class="form-control" id="totalHarga" name="totalHarga" value="@transaksi.totalHarga" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="metodePembayaran" class="form-label">Metode Pembayaran</label>
+            <select class="form-select" id="metodePembayaran" name="metodePembayaran" required>
+              <option value="Tunai" @if(transaksi.metodePembayaran == "Tunai") { selected }>Tunai</option>
+              <option value="Transfer Bank" @if(transaksi.metodePembayaran == "Transfer Bank") { selected }>Transfer Bank</option>
+              <option value="E-Wallet" @if(transaksi.metodePembayaran == "E-Wallet") { selected }>E-Wallet</option>
+              <option value="QRIS" @if(transaksi.metodePembayaran == "QRIS") { selected }>QRIS</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn btn-success mt-3">
+            <i class="fas fa-save"></i> Update
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+}
