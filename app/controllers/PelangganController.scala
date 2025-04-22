@@ -6,12 +6,15 @@ import models.Pelanggan
 import repositories.PelangganRepo
 
 @Singleton
-class PelangganController @Inject()(cc: ControllerComponents, repo: PelangganRepo) extends AbstractController(cc) {
+class PelangganController @Inject()(cc: ControllerComponents, pelangganRepo: PelangganRepo) extends AbstractController(cc) {
 
   // Menampilkan daftar pelanggan
-  def index = Action {
-    val list = repo.getAllPelanggan().toList  // Mengonversi Seq ke List
-    Ok(views.html.pelanggan.index(list))  // Mengirimkan data dalam format List
+  def index(keyword: Option[String]) = Action { implicit request =>
+    val list = keyword match {
+      case Some(k) => pelangganRepo.searchByName(k).toList
+      case None    => pelangganRepo.getAllPelanggan().toList
+    }
+    Ok(views.html.pelanggan.index(list, keyword))
   }
 
   // Menampilkan form untuk membuat pelanggan baru
@@ -24,18 +27,16 @@ class PelangganController @Inject()(cc: ControllerComponents, repo: PelangganRep
     val data = request.body.asFormUrlEncoded.get
     val nama = data("nama").head
     val jk = data("jenisKelamin").head
-    repo.insert(Pelanggan(0, nama, jk))  // Menyimpan data pelanggan baru ke database
-    Redirect(routes.PelangganController.index)  // Mengarahkan ke halaman daftar pelanggan
+    pelangganRepo.insert(Pelanggan(0, nama, jk))  // Menyimpan data pelanggan baru ke database
+    Redirect(routes.PelangganController.index(None))  // Perbaiki agar parameter opsional sesuai
   }
 
   // Menampilkan form untuk mengedit data pelanggan
   def edit(id: Int) = Action {
-    repo.findById(id) match {
+    pelangganRepo.findById(id) match {
       case Some(pelanggan) =>
-        // Jika pelanggan ditemukan, tampilkan form edit dengan data pelanggan
         Ok(views.html.pelanggan.edit(pelanggan))
       case None =>
-        // Jika pelanggan tidak ditemukan, tampilkan error
         NotFound("Pelanggan tidak ditemukan")
     }
   }
@@ -46,14 +47,13 @@ class PelangganController @Inject()(cc: ControllerComponents, repo: PelangganRep
     val nama = data("nama").head
     val jk = data("jenisKelamin").head
 
-    // Memperbarui data pelanggan di database
-    repo.update(Pelanggan(id, nama, jk))
-    Redirect(routes.PelangganController.index)  // Mengarahkan kembali ke halaman daftar pelanggan
+    pelangganRepo.update(Pelanggan(id, nama, jk))
+    Redirect(routes.PelangganController.index(None))
   }
 
-  // Fungsi delete untuk menghapus pelanggan (dapat ditambahkan sesuai kebutuhan)
+  // Fungsi delete untuk menghapus pelanggan
   def delete(id: Int) = Action {
-    repo.delete(id)
-    Redirect(routes.PelangganController.index)  // Setelah menghapus, kembali ke halaman daftar pelanggan
+    pelangganRepo.delete(id)
+    Redirect(routes.PelangganController.index(None))
   }
 }

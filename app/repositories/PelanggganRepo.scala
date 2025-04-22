@@ -73,4 +73,20 @@ class PelangganRepo @Inject()(dbapi: DBApi) {
       stmt.executeUpdate()
     }
   }
+  def searchByName(keyword: String): List[Pelanggan] = {
+    db.withConnection { implicit connection => 
+      val stmt = connection.prepareStatement("SELECT * FROM pelanggan WHERE LOWER(nama_pelanggan) LIKE ?")
+      stmt.setString(1, "%" + keyword.toLowerCase + "%")
+      val rs = stmt.executeQuery()
+      val buffer = scala.collection.mutable.ListBuffer[Pelanggan]()
+      while (rs.next()) {
+        buffer += Pelanggan(
+          rs.getInt("id_pelanggan"),
+          rs.getString("nama_pelanggan"),
+          rs.getString("jenis_kelamin"),
+        )
+      }
+      buffer.toList
+    }    
+  }  
 }
