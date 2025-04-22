@@ -119,6 +119,29 @@ class ObatRepo @Inject()(dbapi: DBApi) {
     }
   }
 
+  def searching(keyword: String): List[Obat] = {
+  db.withConnection { implicit connection => 
+    val stmt = connection.prepareStatement("SELECT * FROM obat WHERE LOWER(nama_obat) LIKE ?")
+    stmt.setString(1, "%" + keyword.toLowerCase + "%")
+    val rs = stmt.executeQuery()
+    val buffer = scala.collection.mutable.ListBuffer[Obat]()
+    
+    while (rs.next()) {
+      buffer += Obat(
+          rs.getInt("id_obat"),
+          rs.getString("nama_obat"),
+          Option(rs.getString("kategori")),
+          Option(rs.getString("keterangan")),
+          Option(rs.getInt("jumlah_stock")),
+          Option(rs.getDouble("harga")),
+          Option(rs.getDate("exp")),
+          Option(rs.getInt("id_supplier")),  
+      )
+    }
+    buffer.toList
+  }
+}
+
   def delete(id: Int): Unit = {
     db.withConnection { implicit connection =>
       val stmt = connection.prepareStatement("DELETE FROM obat WHERE id_obat = ?")

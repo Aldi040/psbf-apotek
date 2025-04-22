@@ -10,9 +10,9 @@ GET     /assets/*file              controllers.Assets.versioned(path="/public", 
 
 # Map static resources from the /public folder to the /assets URL path
 
-# Route untuk menampilkan daftar pelanggan
+# sidebar
 GET     /dashboard              controllers.DashboardController.index
-GET     /obat                   controllers.ObatController.index
+GET     /obat                   controllers.ObatController.index(keyword: Option[String] ?= None)
 GET     /supplier               controllers.SupplierController.index(keyword: Option[String] ?= None)
 GET     /transaksi              controllers.TransaksiController.index
 
@@ -39,7 +39,7 @@ POST    /supplier/delete/:id        controllers.SupplierController.delete(id: In
 
 # obat
 # obat Routes
-GET     /obat                   controllers.ObatController.index
+GET     /obat                   controllers.ObatController.index(keyword: Option[String] ?= None)
 GET     /obat/create            controllers.ObatController.createForm
 POST    /obat/save          controllers.ObatController.save
 POST    /obat/update/:id        controllers.ObatController.updateObat(id: Int)
