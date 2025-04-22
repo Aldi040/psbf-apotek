@@ -1,0 +1,58 @@
+@(pelanggans: Seq[models.Pelanggan], obats: Seq[models.Obat])
+
+@layout.main("Tambah Detail Pembelian") {
+  <div class="container mt-4">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <!-- Tombol Kembali -->
+        <a href="@routes.DetailController.index" class="btn btn-secondary mb-3">
+          <i class="fas fa-arrow-left"></i> Kembali
+        </a>
+        <div class="card shadow-sm">
+          <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+            <h4 class="mb-0"><i class="fas fa-notes-medical"></i> Tambah Detail Pembelian</h4>
+          </div>
+          <div class="card-body">
+            <form action="@routes.DetailController.save" method="POST">
+              <div class="mb-3">
+                <label for="idPelanggan" class="form-label">Nama Pelanggan</label>
+                <select name="idPelanggan" id="idPelanggan" class="form-select" required>
+                  <option value="">Pilih Pelanggan...</option>
+                  @for(p <- pelanggans) {
+                    <option value="@p.id">@p.nama</option>
+                  }
+                </select>
+              </div>
+
+              <div class="mb-3">
+                <label for="idObat" class="form-label">Nama Obat</label>
+                <select name="idObat" id="idObat" class="form-select" required>
+                  <option value="">Pilih Obat...</option>
+                  @for(o <- obats) {
+                    <option value="@o.id">@o.nama_obat</option>
+                  }
+                </select>
+              </div>
+
+              <div class="mb-3">
+                <label for="qty" class="form-label">Jumlah</label>
+                <input type="number" class="form-control" id="qty" name="qty" required>
+              </div>
+
+              <div class="mb-3">
+                <label for="idTransaksi" class="form-label">ID Transaksi</label>
+                <input type="number" class="form-control" id="idTransaksi" name="idTransaksi" required>
+              </div>
+
+              <div class="d-flex justify-content-end">
+                <button type="submit" class="btn btn-success">
+                  <i class="fas fa-save"></i> Simpan
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+}

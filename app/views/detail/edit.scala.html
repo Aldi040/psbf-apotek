@@ -1,0 +1,53 @@
+@(id: Int, idPelanggan: Int, idObat: Int, qty: Int, idTransaksi: Int, pelanggans: Seq[models.Pelanggan], obats: Seq[models.Obat])
+
+@layout.main("Edit Detail Pembelian") {
+  <div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2><i class="fas fa-pen-to-square"></i> Edit Detail Pembelian</h2>
+      <a href="@routes.DetailController.index" class="btn btn-secondary">
+        <i class="fas fa-arrow-left"></i> Kembali
+      </a>
+    </div>
+
+    <div class="card shadow-sm">
+      <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">Form Edit Detail</h5>
+      </div>
+      <div class="card-body">
+        <form action="@routes.DetailController.update(id)" method="POST">
+          <div class="mb-3">
+            <label for="idPelanggan" class="form-label">Pelanggan</label>
+            <select class="form-select" id="idPelanggan" name="idPelanggan" required>
+              @for(p <- pelanggans) {
+                <option value="@p.id" @if(p.id == idPelanggan) {selected}>@p.nama</option>
+              }
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label for="idObat" class="form-label">Obat</label>
+            <select class="form-select" id="idObat" name="idObat" required>
+              @for(o <- obats) {
+                <option value="@o.id" @if(o.id == idObat) {selected}>@o.nama_obat</option>
+              }
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label for="qty" class="form-label">Jumlah</label>
+            <input type="number" class="form-control" id="qty" name="qty" value="@qty" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="idTransaksi" class="form-label">ID Transaksi</label>
+            <input type="number" class="form-control" id="idTransaksi" name="idTransaksi" value="@idTransaksi" required>
+          </div>
+
+          <button type="submit" class="btn btn-success mt-3">
+            <i class="fas fa-save"></i> Update
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+}
