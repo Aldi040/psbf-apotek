@@ -17,7 +17,7 @@ GET     /supplier               controllers.SupplierController.index(keyword: Op
 GET     /transaksi              controllers.TransaksiController.index
 
 # Menampilkan Daftar Pelanggan
-GET     /pelanggan             controllers.PelangganController.index
+GET     /pelanggan             controllers.PelangganController.index(keyword: Option[String] ?= None)
 GET     /pelanggan/create      controllers.PelangganController.createForm
 POST    /pelanggan/save        controllers.PelangganController.save
 POST    /pelanggan/update/:id      controllers.PelangganController.updatePelanggan(id: Int)
