@@ -44,7 +44,7 @@ Pastikan kamu sudah menginstal:
 1. **Clone project ini:**
 
     ```bash
-    https://github.com/Aldi040/psbf-apotek.git
+    git clone https://github.com/Aldi040/psbf-apotek.git
     cd psbf-apotek
     ```
 
