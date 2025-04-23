@@ -99,7 +99,6 @@ def searchByName(keyword: String): List[Supplier] = {
         Option(rs.getString("email_supplier"))   // Correct column name
       )
     }
-
     buffer.toList
   }
 }

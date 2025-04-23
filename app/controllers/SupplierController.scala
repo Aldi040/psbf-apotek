@@ -17,9 +17,6 @@ class SupplierController @Inject()(cc: ControllerComponents, supplierRepo: Suppl
     Ok(views.html.supplier.index(list, keyword))
   }
 
-
-
-
   // Menampilkan form untuk membuat supplier baru
   def createForm = Action {
     Ok(views.html.supplier.create())
